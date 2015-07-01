@@ -98,7 +98,7 @@ end
 
 function pcacov{T<:FloatingPoint}(C::DenseMatrix{T}, mean::Vector{T};
                 maxoutdim::Int=size(C,1),
-                pratio::T=default_pca_pratio)
+                pratio::T=convert(T, default_pca_pratio))
 
     check_pcaparams(size(C,1), mean, maxoutdim, pratio)
     Eg = eigfact(Symmetric(C))
@@ -112,7 +112,7 @@ end
 
 function pcasvd{T<:FloatingPoint}(Z::DenseMatrix{T}, mean::Vector{T}, tw::Real;
                 maxoutdim::Int=min(size(Z)...),
-                pratio::T=default_pca_pratio)
+                pratio::T=convert(T, default_pca_pratio))
 
     check_pcaparams(size(Z,1), mean, maxoutdim, pratio)
     Svd = svdfact(Z)
@@ -133,7 +133,7 @@ end
 function fit{T<:FloatingPoint}(::Type{PCA}, X::DenseMatrix{T};
              method::Symbol=:auto,
              maxoutdim::Int=size(X,1),
-             pratio::T=default_pca_pratio,
+             pratio::T=convert(T, default_pca_pratio),
              mean=nothing)
 
     d, n = size(X)

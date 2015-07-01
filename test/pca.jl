@@ -146,3 +146,6 @@ M = fit(PCA, X; method=:svd, pratio=0.85)
 @test_approx_eq P'P eye(3)
 @test issorted(pvs; rev=true)
 
+# test that fit works with Float32 values
+X2 = convert(Array{Float32,2}, X)
+M = fit(PCA, X2)
