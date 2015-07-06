@@ -149,3 +149,4 @@ M = fit(PCA, X; method=:svd, pratio=0.85)
 # test that fit works with Float32 values
 X2 = convert(Array{Float32,2}, X)
 M = fit(PCA, X2)
+M = fit(PCA, X2, pratio=0.85)

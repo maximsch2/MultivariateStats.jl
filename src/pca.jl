@@ -74,7 +74,7 @@ end
 
 const default_pca_pratio = 0.99
 
-function check_pcaparams{T<:FloatingPoint}(d::Int, mean::Vector{T}, md::Int, pr::T)
+function check_pcaparams{T<:FloatingPoint}(d::Int, mean::Vector{T}, md::Int, pr)
     isempty(mean) || length(mean) == d ||
         throw(DimensionMismatch("Incorrect length of mean."))
     md >= 1 || error("maxoutdim must be a positive integer.")
@@ -82,7 +82,7 @@ function check_pcaparams{T<:FloatingPoint}(d::Int, mean::Vector{T}, md::Int, pr:
 end
 
 
-function choose_pcadim{T<:FloatingPoint}(v::AbstractVector{T}, ord::Vector{Int}, vsum::T, md::Int, pr::T)
+function choose_pcadim{T<:FloatingPoint}(v::AbstractVector{T}, ord::Vector{Int}, vsum::T, md::Int, pr)
     md = min(length(v), md)
     k = 1
     a = v[ord[1]]
@@ -98,7 +98,7 @@ end
 
 function pcacov{T<:FloatingPoint}(C::DenseMatrix{T}, mean::Vector{T};
                 maxoutdim::Int=size(C,1),
-                pratio::T=convert(T, default_pca_pratio))
+                pratio=convert(T, default_pca_pratio))
 
     check_pcaparams(size(C,1), mean, maxoutdim, pratio)
     Eg = eigfact(Symmetric(C))
@@ -112,7 +112,7 @@ end
 
 function pcasvd{T<:FloatingPoint}(Z::DenseMatrix{T}, mean::Vector{T}, tw::Real;
                 maxoutdim::Int=min(size(Z)...),
-                pratio::T=convert(T, default_pca_pratio))
+                pratio=convert(T, default_pca_pratio))
 
     check_pcaparams(size(Z,1), mean, maxoutdim, pratio)
     Svd = svdfact(Z)
@@ -133,7 +133,7 @@ end
 function fit{T<:FloatingPoint}(::Type{PCA}, X::DenseMatrix{T};
              method::Symbol=:auto,
              maxoutdim::Int=size(X,1),
-             pratio::T=convert(T, default_pca_pratio),
+             pratio=convert(T, default_pca_pratio),
              mean=nothing)
 
     d, n = size(X)
